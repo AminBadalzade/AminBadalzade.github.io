@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amin Badalzade</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #12141a;
+    --ink: #ece9e1;
+    --muted: #8b8f9a;
+    --accent: #e8a33d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  main {
+    max-width: 480px;
+    width: 100%;
+  }
+
+  .prompt {
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2.4rem, 8vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  .role {
+    color: var(--muted);
+    font-size: clamp(0.78rem, 2.6vw, 0.95rem);
+    margin-bottom: 28px;
+    white-space: normal;
+  }
+
+  /* Each word is one unbreakable unit; line breaks only happen
+     in the space BETWEEN word spans, never inside a word. */
+  .role .word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .role .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-6px);
+    animation: reveal 0.35s ease forwards;
+  }
+
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .greeting {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.3rem;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 40px;
+    max-width: 34ch;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    border: 1px solid #2a2d36;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 0.95rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .link:hover, .link:focus-visible {
+    border-color: var(--accent);
+    background: #171a21;
+  }
+
+  .link .site {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .link .arrow {
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+
+  footer {
+    margin-top: 40px;
+    color: #52565f;
+    font-size: 0.75rem;
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="prompt">~/amin</div>
+  <h1>Amin Badalzade</h1>
+  <div class="role" id="role"></div>
+  <p class="greeting">Hello, I'm Amin. Let's connect.</p>
+
+  <div class="links">
+    <a class="link" href="https://github.com/AminBadalzade" target="_blank" rel="noopener">
+      <span>GitHub <span class="site">— code &amp; projects</span></span>
+      <span class="arrow">↗</span>
+    </a>
+    <a class="link" href="https://www.linkedin.com/in/amin-badalzade-77454530a/" target="_blank" rel="noopener">
+      <span>LinkedIn <span class="site">— experience &amp; network</span></span>
+      <span class="arrow">↗</span>
+    </a>
+    <a class="link" href="https://drive.google.com/file/d/1UEtTmabAor22iANSGj9DBhNluNp6ugZm/view?usp=sharing" target="_blank" rel="noopener">
+      <span>Resume <span class="site">— CV, PDF</span></span>
+      <span class="arrow">↗</span>
+    </a>
+  </div>
+
+  <footer>Vilnius, Lithuania</footer>
+</main>
+
+<script>
+  const text = "Software Engineering student · Backend developer, Java & Spring";
+  const el = document.getElementById('role');
+  const delayStep = 18; // ms per character, fast
+
+  let globalIndex = 0;
+  const words = text.split(' ');
+
+  words.forEach((word, wIndex) => {
+    const wordSpan = document.createElement('span');
+    wordSpan.className = 'word';
+
+    word.split('').forEach((ch) => {
+      const charSpan = document.createElement('span');
+      charSpan.className = 'char';
+      charSpan.style.animationDelay = (globalIndex * delayStep) + 'ms';
+      charSpan.textContent = ch;
+      wordSpan.appendChild(charSpan);
+      globalIndex++;
+    });
+
+    el.appendChild(wordSpan);
+
+    // Add a real breakable space between words (not inside the nowrap word span)
+    if (wIndex < words.length - 1) {
+      const spaceSpan = document.createElement('span');
+      spaceSpan.className = 'char';
+      spaceSpan.style.animationDelay = (globalIndex * delayStep) + 'ms';
+      spaceSpan.textContent = '\u00A0';
+      el.appendChild(spaceSpan);
+      globalIndex++;
+    }
+  });
+</script>
+</body>
+</html>
